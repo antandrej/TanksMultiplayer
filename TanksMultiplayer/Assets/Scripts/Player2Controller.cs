@@ -39,6 +39,7 @@ public class Player2Controller : MonoBehaviour
 
     void Start()
     {
+        player2LivesTxt.text = MenuManager.p2Name + " lives left: " + player2Lives;
         Player2CurrentHealth = Player2MaxHealth;
         healthBar.SetMaxHealth(Player2MaxHealth);
     }
@@ -148,7 +149,7 @@ public class Player2Controller : MonoBehaviour
     {
         player2Lives--;
         deathAudio.Play();
-        player2LivesTxt.text = "Player 2 lives left: " + player2Lives;
+        player2LivesTxt.text = MenuManager.p2Name + " lives left: " + player2Lives;
         dead = true;
         Destroy(Instantiate(explosion1, this.transform.position, Quaternion.identity), 3f);
         this.gameObject.SetActive(false);

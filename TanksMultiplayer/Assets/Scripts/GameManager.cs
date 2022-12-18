@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         if (p1c.dead)
         {
             respawnText.gameObject.SetActive(true);
-            respawnText.text = "PRESS ENTER TO RESPAWN\nPLAYER 1";
+            respawnText.text = "PRESS ENTER TO RESPAWN\n" + MenuManager.p1Name;
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 Vector3 spawnPosition = p2.transform.position;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         if (p1c.toRespawn)
         {
             respawnText.gameObject.SetActive(true);
-            respawnText.text = "PLAYER 2 WON\nPRESS ENTER TO START NEW GAME";
+            respawnText.text = MenuManager.p2Name + " WON\nPRESS ENTER TO START NEW GAME";
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         if (p2c.dead)
         {
             respawnText.gameObject.SetActive(true);
-            respawnText.text = "PRESS ENTER TO RESPAWN\nPLAYER 2";
+            respawnText.text = "PRESS ENTER TO RESPAWN\n" + MenuManager.p2Name;
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 Vector3 spawnPosition = p1.transform.position;
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         if (p2c.toRespawn)
         {
             respawnText.gameObject.SetActive(true);
-            respawnText.text = "PLAYER 1 WON\nPRESS ENTER TO START NEW GAME";
+            respawnText.text = MenuManager.p1Name + " WON\nPRESS ENTER TO START NEW GAME";
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
