@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class Shell : MonoBehaviour
     public int shellDamage;
 
     public GameObject explosion;
+
+    //private GameObject toDestroy;
 
     void Start()
     {
@@ -24,23 +27,30 @@ public class Shell : MonoBehaviour
     {
         if (col.gameObject.tag == "Wall")
         {
-            Destroy(Instantiate(explosion, this.transform.position, Quaternion.identity), 1f);
-            Destroy(this.gameObject);
+            Destroy(PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity), 1f);
+            //Invoke("DestroyExplosion", 1f);
+            PhotonNetwork.Destroy(this.gameObject);
         }
 
-        if (col.gameObject.tag == "Player1")
+        if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<Player1Controller>().Player1CurrentHealth -= shellDamage;
-            Destroy(Instantiate(explosion, this.transform.position, Quaternion.identity), 1f);
+            col.gameObject.GetComponent<Player1Controller>().PlayerCurrentHealth -= shellDamage;
+            Destroy(PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity), 1f);
+            //Invoke("DestroyExplosion", 1f);
             col.gameObject.GetComponent<Player1Controller>().hit = true;
             Destroy(this.gameObject);
         }
-        if (col.gameObject.tag == "Player2")
-        {
-            col.gameObject.GetComponent<Player2Controller>().Player2CurrentHealth -= shellDamage;
-            Destroy(Instantiate(explosion, this.transform.position, Quaternion.identity), 1f);
-            col.gameObject.GetComponent<Player2Controller>().hit = true;
-            Destroy(this.gameObject);
-        }
+        //if (col.gameObject.tag == "Player2")
+        //{
+        //    col.gameObject.GetComponent<Player2Controller>().Player2CurrentHealth -= shellDamage;
+        //    Destroy(Instantiate(explosion, this.transform.position, Quaternion.identity), 1f);
+        //    col.gameObject.GetComponent<Player2Controller>().hit = true;
+        //    Destroy(this.gameObject);
+        //}
     }
+    /*
+    void DestroyExplosion()
+    {
+        PhotonNetwork.Destroy(toDestroy);
+    }*/
 }

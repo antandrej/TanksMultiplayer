@@ -3,27 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
+//using Photon.Pun;
+//using Photon.Realtime;
 
+//[RequireComponent(typeof(InputField))]
 public class MenuManager : MonoBehaviour
 {
-    public static string p1Name = "Player1";
-    public static string p2Name = "Player2";
+    //const string playerNamePrefKey = "PlayerName";
+    //public static string p2Name = "Player2";
 
-    public Text p1controls;
-    public Text p2controls;
+    public Text pcontrols;
+    //public Text p2controls;
 
     public void Start()
     {
         if (SceneManager.GetActiveScene().name == "HowToPlay")
         {
-            p1controls.text = p1Name + " Controls :";
-            p2controls.text = p2Name + " Controls :";
+            pcontrols.text = PhotonNetwork.NickName + " controls:";
         }
+        //string defaultName = string.Empty;
+        //InputField _inputField = this.GetComponent<InputField>();
+        //if (_inputField != null)
+        //{
+        //    if (PlayerPrefs.HasKey(playerNamePrefKey))
+        //    {
+        //        defaultName = PlayerPrefs.GetString(playerNamePrefKey);
+        //        _inputField.text = defaultName;
+        //    }
+        //}
+
+        //PhotonNetwork.NickName = defaultName;
     }
 
     public void LoadGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Loading");
     }
 
     public void LoadHowToPlay()
@@ -40,14 +55,14 @@ public class MenuManager : MonoBehaviour
     {
         Application.Quit();
     }
-
+    /*
     public void SetPlayer1Name(string s)
     {
         p1Name = s;
-    }
+    }*/
 
-    public void SetPlayer2Name(string s)
-    {
-        p2Name = s;
-    }
+    //public void SetPlayer2Name(string s)
+    //{
+    //    p2Name = s;
+    //}
 }
