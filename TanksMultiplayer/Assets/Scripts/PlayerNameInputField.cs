@@ -14,9 +14,7 @@ public class PlayerNameInputField : MonoBehaviour
     // Store the PlayerPref Key to avoid typos
     const string playerNamePrefKey = "PlayerName";
 
-    /// &lt;summary&gt;
     /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-    /// &lt;/summary&gt;
     void Start() {
 
         string defaultName = string.Empty;
@@ -29,7 +27,10 @@ public class PlayerNameInputField : MonoBehaviour
                 _inputField.text = defaultName;
             }
         }
-        PhotonNetwork.NickName = defaultName;
+        if (PhotonNetwork.LocalPlayer.IsLocal)
+        {
+            PhotonNetwork.NickName = defaultName;
+        }
     }
 
     /// &lt;summary&gt;
@@ -44,6 +45,7 @@ public class PlayerNameInputField : MonoBehaviour
             Debug.LogError("Player Name is null or empty");
             return;
         }
+
         PhotonNetwork.NickName = value;
 
         PlayerPrefs.SetString(playerNamePrefKey, value);

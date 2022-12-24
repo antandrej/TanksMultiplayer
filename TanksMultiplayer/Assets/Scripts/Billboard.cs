@@ -9,12 +9,17 @@ public class Billboard : MonoBehaviour
     public GameObject player;
     private Vector3 offset = new Vector3(0, 7.5f, 0);
 
+    public PhotonView view;
+
     void Start()
     {
 
         //if (player.gameObject.tag == "Player1")
         //{
-           this.gameObject.GetComponentInChildren<Text>().text = PhotonNetwork.NickName;
+        //if (PhotonNetwork.LocalPlayer.IsLocal)
+        //{
+        //    this.gameObject.GetComponentInChildren<Text>().text = view.Owner.NickName;
+        //}
         //}
 
         //if (player.gameObject.tag == "Player2")

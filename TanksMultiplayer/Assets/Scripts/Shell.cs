@@ -27,30 +27,19 @@ public class Shell : MonoBehaviour
     {
         if (col.gameObject.tag == "Wall")
         {
-            Destroy(PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity), 1f);
-            //Invoke("DestroyExplosion", 1f);
+            Debug.Log("hit");
+            PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity);
+            Debug.Log("instantiate");
             PhotonNetwork.Destroy(this.gameObject);
         }
 
         if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<Player1Controller>().PlayerCurrentHealth -= shellDamage;
-            Destroy(PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity), 1f);
+            //Destroy(PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity), 1f);
             //Invoke("DestroyExplosion", 1f);
             col.gameObject.GetComponent<Player1Controller>().hit = true;
             Destroy(this.gameObject);
         }
-        //if (col.gameObject.tag == "Player2")
-        //{
-        //    col.gameObject.GetComponent<Player2Controller>().Player2CurrentHealth -= shellDamage;
-        //    Destroy(Instantiate(explosion, this.transform.position, Quaternion.identity), 1f);
-        //    col.gameObject.GetComponent<Player2Controller>().hit = true;
-        //    Destroy(this.gameObject);
-        //}
     }
-    /*
-    void DestroyExplosion()
-    {
-        PhotonNetwork.Destroy(toDestroy);
-    }*/
 }

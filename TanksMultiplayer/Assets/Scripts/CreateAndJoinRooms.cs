@@ -33,7 +33,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         if (SceneManager.GetActiveScene().name == "Lobby")
         {
-            nick.text = PhotonNetwork.NickName;
+            if (PhotonNetwork.LocalPlayer.IsLocal)
+            {
+                nick.text = PhotonNetwork.LocalPlayer.NickName;
+            }
         }
     }
 }

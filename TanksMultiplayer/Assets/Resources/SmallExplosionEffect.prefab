@@ -14247,6 +14247,7 @@ GameObject:
   - component: {fileID: 8123565820094299311}
   - component: {fileID: 7210677977331817324}
   - component: {fileID: 7703821796108366167}
+  - component: {fileID: 3482770946306383569}
   m_Layer: 0
   m_Name: SmallExplosionEffect
   m_TagString: Untagged
@@ -19041,3 +19042,15 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &3482770946306383569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013462590818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1ac2756f126dd4d9c55cd0bfb10985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

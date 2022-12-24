@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using System;
 
 public class Player1Controller : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class Player1Controller : MonoBehaviour
     public AudioSource shootAudio;
     public AudioSource deathAudio;
 
+    public Text playerName;
+
     PhotonView view;
 
     //private GameObject toDestroy;
@@ -49,6 +52,8 @@ public class Player1Controller : MonoBehaviour
         PlayerCurrentHealth = PlayerMaxHealth;
         healthBar.SetMaxHealth(PlayerMaxHealth);
         view = GetComponent<PhotonView>();
+
+        playerName.text = view.Owner.NickName;
     }
 
     void FixedUpdate()
