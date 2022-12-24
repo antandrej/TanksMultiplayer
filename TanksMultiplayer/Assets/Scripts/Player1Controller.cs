@@ -39,7 +39,7 @@ public class Player1Controller : MonoBehaviour
     public AudioSource shootAudio;
     public AudioSource deathAudio;
 
-    public Text playerName;
+    public Text playerNametxt;
 
     PhotonView view;
 
@@ -47,13 +47,13 @@ public class Player1Controller : MonoBehaviour
 
     void Start()
     {
+        view = GetComponent<PhotonView>();
         //ResetParticles();
         //player1LivesTxt.text = MenuManager.p1Name + " lives left: " + player1Lives;
         PlayerCurrentHealth = PlayerMaxHealth;
         healthBar.SetMaxHealth(PlayerMaxHealth);
-        view = GetComponent<PhotonView>();
 
-        playerName.text = view.Owner.NickName;
+        playerNametxt.text = view.Owner.NickName;
     }
 
     void FixedUpdate()
@@ -144,7 +144,7 @@ public class Player1Controller : MonoBehaviour
             {
                 toRespawn = true;
             }*/
-
+            
             if (PlayerCurrentHealth < 65 && PlayerCurrentHealth > 35 && hit)
             {
                 smoke.Play();

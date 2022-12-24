@@ -20,17 +20,17 @@ public class Shell : MonoBehaviour
     void Update()
     {
         transform.Translate(shellSpeed * Vector3.up * Time.deltaTime);
-        Destroy(this.gameObject, 7f);
+        Destroy(this.gameObject, 7f); // REWORK
     }
 
     public void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Wall")
         {
-            Debug.Log("hit");
             PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity);
-            Debug.Log("instantiate");
-            PhotonNetwork.Destroy(this.gameObject);
+            if (GetComponent<PhotonView>().IsMine)
+                StartCoroutine(DestroyShell());
+            //PhotonNetwork.Destroy(this.gameObject);
         }
 
         if (col.gameObject.tag == "Player")
@@ -41,5 +41,12 @@ public class Shell : MonoBehaviour
             col.gameObject.GetComponent<Player1Controller>().hit = true;
             Destroy(this.gameObject);
         }
+    }
+
+    IEnumerator DestroyShell()
+    {
+        this.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1);
+        PhotonNetwork.Destroy(this.gameObject);
     }
 }
