@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2745897242740438165}
   m_Layer: 5
   m_Name: RespawnText
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,9 +78,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'PRESS ENTER TO RESPAWN
+  m_Text: 'YOU DIED
 
-    PLAYER 1'
+    NPRESS ENTER TO RESPAWN'
 --- !u!95 &2745897242740438165
 Animator:
   serializedVersion: 3

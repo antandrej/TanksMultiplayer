@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using System;
 
 public class Player1Controller : MonoBehaviour
 {
@@ -25,6 +24,7 @@ public class Player1Controller : MonoBehaviour
     public HealthBar1 healthBar;
     //public Text player1LivesTxt;
 
+    private GameObject toDestroy;
     public GameObject explosion1;
     public GameObject explosion2;
     public ParticleSystem sparks;
@@ -43,6 +43,13 @@ public class Player1Controller : MonoBehaviour
 
     PhotonView view;
 
+    Vector3 spawnPosition;
+    public GameObject respawnText;
+    public float minX;
+    public float maxX;
+    public float minZ;
+    public float maxZ;
+
     //private GameObject toDestroy;
 
     void Start()
@@ -54,6 +61,13 @@ public class Player1Controller : MonoBehaviour
         healthBar.SetMaxHealth(PlayerMaxHealth);
 
         playerNametxt.text = view.Owner.NickName;
+
+        spawnPosition = new Vector3(Random.Range(minX, maxX), 0.25f, Random.Range(minZ, maxZ));
+        if (view.IsMine)
+        {
+            respawnText = GameObject.FindWithTag("Respawn");
+            respawnText.gameObject.SetActive(false);
+        }
     }
 
     void FixedUpdate()
@@ -101,6 +115,7 @@ public class Player1Controller : MonoBehaviour
 
     void Update()
     {
+        healthBar.SetHealth(PlayerCurrentHealth);
         if (view.IsMine)
         {
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
@@ -136,58 +151,154 @@ public class Player1Controller : MonoBehaviour
             }
             if (PlayerCurrentHealth <= 0)
             {
-                DestroyTank();
+                view.RPC("DestroyTank", RpcTarget.All);
+                //DestroyTank();
             }
-            healthBar.SetHealth(PlayerCurrentHealth);
+            //healthBar.SetHealth(PlayerCurrentHealth);
             /*
             if (player1Lives == 0)
             {
                 toRespawn = true;
             }*/
-            
+
             if (PlayerCurrentHealth < 65 && PlayerCurrentHealth > 35 && hit)
             {
-                smoke.Play();
+                //view.RPC("PlayParticle", RpcTarget.All, smoke);
+                PlayParticle(smoke);
                 hit = false;
             }
 
             if (PlayerCurrentHealth < 34 && PlayerCurrentHealth > 10 && hit)
             {
-                sparks.Play();
+                //view.RPC("PlayParticle", RpcTarget.All, sparks);
+                PlayParticle(sparks);
                 hit = false;
             }
 
             if (PlayerCurrentHealth < 9 && PlayerCurrentHealth > 0 && hit)
             {
-                flames.Play();
+                //view.RPC("PlayParticle", RpcTarget.All, flames);
+                PlayParticle(flames);
                 hit = false;
+            }
+
+            if (dead)
+            {
+                Debug.Log("Dead");
+                respawnText.gameObject.SetActive(true);
+                //view.RPC("Resp", RpcTarget.All, true);
+                respawnText.GetComponent<Text>().text = "YOU DIED\nRESPAWNING IN 3 SECONDS";
+                Debug.Log("text active");
+                view.RPC("SpawnPlayer", RpcTarget.All);
+                Invoke("SetResp", 3f);
+                //if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+                //{                   
+                //    this.transform.position = spawnPosition;
+                //    dead = false;
+                //    PlayerCurrentHealth = PlayerMaxHealth;
+                //    view.RPC("Resp", RpcTarget.All, false);
+                //    //respawnText.gameObject.SetActive(false);
+                //    ResetParticles();
+                //    this.gameObject.SetActive(true);
+                //    Debug.Log("Alive");
+                //}
             }
         }
     }
 
+    [PunRPC]
     public void DestroyTank()
     {
-        if (view.IsMine)
-        {
-            //player1Lives--;
-            deathAudio.Play();
-            //player1LivesTxt.text = MenuManager.p1Name + " lives left: " + player1Lives;
-            dead = true;
-            Destroy(PhotonNetwork.Instantiate(explosion1.name, this.transform.position, Quaternion.identity), 3f);
-            //Invoke("DestroyExplosion", 3f);
-            this.gameObject.SetActive(false);
-        }
+        dead = true;
+        toDestroy = PhotonNetwork.Instantiate(explosion1.name, this.transform.position, Quaternion.identity);
+        //player1Lives--;
+        deathAudio.Play();
+        //player1LivesTxt.text = MenuManager.p1Name + " lives left: " + player1Lives;
+        DestroyParticle();
+        //Invoke("DestroyExplosion", 3f);
+        this.gameObject.SetActive(false);
     }
 
+    [PunRPC]
     public void ResetParticles()
     {
         sparks.Stop();
         flames.Stop();
         smoke.Stop();
     }
-    /*
-    void DestroyExplosion()
+
+    [PunRPC]
+    void PlayParticle(ParticleSystem particle)
     {
-        PhotonNetwork.Destroy(toDestroy);
-    }*/
+        particle.Play();
+    }
+
+    [PunRPC]
+    void DestroyParticle()
+    {
+        Destroy(toDestroy, 3f);
+    }
+
+    //[PunRPC]
+    //void Resp(bool show)
+    //{
+    //    respawnText.gameObject.SetActive(show);
+    //}
+
+    [PunRPC]
+    void SpawnPlayer()
+    {
+        Invoke("SpawnPlayerIn", 3f);
+    }
+
+    void SpawnPlayerIn()
+    {
+        //yield return new WaitForSeconds(3f);
+        spawnPosition = new Vector3(Random.Range(minX, maxX), 0.25f, Random.Range(minZ, maxZ));
+        this.transform.position = spawnPosition;
+        dead = false;
+        PlayerCurrentHealth = PlayerMaxHealth;
+        //view.RPC("Resp", RpcTarget.All, false);
+        //respawnText.gameObject.SetActive(false);
+        view.RPC("ResetParticles", RpcTarget.All);
+        this.gameObject.SetActive(true);
+        Debug.Log("Alive");
+    }
+
+    void SetResp()
+    {
+        respawnText.gameObject.SetActive(false);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //if (stream.IsWriting)
+        //{
+        //    stream.SendNext(transform.position);
+        //    stream.SendNext(transform.rotation);
+        //}
+        //else
+        //{
+        //    transform.position = (Vector3)stream.ReceiveNext();
+        //    transform.rotation = (Quaternion)stream.ReceiveNext();
+
+        //    float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+        //    transform.position += GetComponent<Rigidbody>().velocity * lag;
+        //}
+        if (stream.IsWriting)
+        {
+            stream.SendNext(GetComponent<Rigidbody>().position);
+            stream.SendNext(GetComponent<Rigidbody>().rotation);
+            stream.SendNext(GetComponent<Rigidbody>().velocity);
+        }
+        else
+        {
+            GetComponent<Rigidbody>().position = (Vector3)stream.ReceiveNext();
+            GetComponent<Rigidbody>().rotation = (Quaternion)stream.ReceiveNext();
+            GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+            GetComponent<Rigidbody>().position += GetComponent<Rigidbody>().velocity * lag;
+        }
+    }
 }

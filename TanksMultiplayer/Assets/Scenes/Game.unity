@@ -10881,7 +10881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f931f1a21e4a2545b54d9e71c38494e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnText: {fileID: 1640165770}
+  respawnText: {fileID: 0}
   playerPrefab: {fileID: 9214556064840562395, guid: 05f747af1c818cc4e9291fdda08ddb0c,
     type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
@@ -17681,18 +17681,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1881529688}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1640165770 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1640165770, guid: 2152df2fc8138f54ca32a0d813070203,
-    type: 3}
-  m_PrefabInstance: {fileID: 1914726994850346291}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1644004619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4278070613995017848, guid: 514adc6d28907f7459a69cd0d07e788f,
@@ -23532,6 +23520,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1021019011}
+    - target: {fileID: 1640165767, guid: 2152df2fc8138f54ca32a0d813070203, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640165767, guid: 2152df2fc8138f54ca32a0d813070203, type: 3}
+      propertyPath: m_TagString
+      value: Respawn
+      objectReference: {fileID: 0}
     - target: {fileID: 1640165770, guid: 2152df2fc8138f54ca32a0d813070203, type: 3}
       propertyPath: m_Text
       value: 'YOU DIED

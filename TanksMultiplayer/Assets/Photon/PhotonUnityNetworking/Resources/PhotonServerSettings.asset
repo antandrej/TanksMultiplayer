@@ -40,6 +40,17 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - playParticle1
+  - DestroyParticle
+  - DestroyOverTime
+  - DestroyShell
+  - SpawnExplosion
+  - SetHealth
+  - SetMaxHealth
+  - DestroyTank
+  - PlayParticle
+  - ResetParticles
+  - Resp
+  - SpawnPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -7,7 +7,7 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
-    public Text respawnText;
+    public GameObject respawnText;
     public GameObject playerPrefab;
     //public GameObject p2;
     private Player1Controller pc;
@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     //public GameObject hbar2;
     public Vector3 spawnPosition;
 
+    PhotonView view;
+
     public float minX;
     public float maxX;
     public float minZ;
@@ -23,30 +25,35 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        respawnText.gameObject.SetActive(false);
+        //respawnText.gameObject.SetActive(false);
         Vector3 spawnPosition = new Vector3(Random.Range(minX, maxX), 0.25f, Random.Range(minZ, maxZ));
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition, Quaternion.identity);
         pc = playerPrefab.GetComponent<Player1Controller>();
-        //playerPrefab.transform.position = spawnPosition;
+        view = playerPrefab.GetComponent<PhotonView>();
+        playerPrefab.transform.position = spawnPosition;
+        //respawnText = GameObject.FindWithTag("Respawn");
     }
 
     void Update()
-    {        
-        if (pc.dead)
-        {
-            respawnText.gameObject.SetActive(true);
-            respawnText.text = "YOU DIED\nNPRESS ENTER TO RESPAWN";
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-            {
-                playerPrefab.transform.position = spawnPosition;
-                pc.dead = false;               
-                pc.PlayerCurrentHealth = pc.PlayerMaxHealth;
-                respawnText.gameObject.SetActive(false);
-                pc.ResetParticles();
-                //hbar.gameObject.SetActive(true);
-                playerPrefab.gameObject.SetActive(true);
-            }
-        }
+    {
+
+        //if (pc.dead && view.IsMine)
+        //{
+        //    Debug.Log("Dead");
+        //    view.RPC("Resp", RpcTarget.All, true);
+        //    Debug.Log("text active");
+        //    respawnText.GetComponent<Text>().text = "YOU DIED\nNPRESS ENTER TO RESPAWN";
+        //    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        //    {
+        //        Debug.Log("Alive");
+        //        playerPrefab.transform.position = spawnPosition;
+        //        pc.dead = false;
+        //        pc.PlayerCurrentHealth = pc.PlayerMaxHealth;
+        //        view.RPC("Resp", RpcTarget.All, false);
+        //        pc.ResetParticles();
+        //        playerPrefab.gameObject.SetActive(true);
+        //    }
+        //}
 
         //if (p1c.toRespawn)
         //{
@@ -87,5 +94,10 @@ public class GameManager : MonoBehaviour
         //        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         //    }
         //}
+    }
+    [PunRPC]
+    void Resp(bool show)
+    {
+        respawnText.gameObject.SetActive(show);
     }
 }

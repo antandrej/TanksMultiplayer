@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class HealthBar1 : MonoBehaviour
     public Image fill;
     public Slider slider;
 
+    [PunRPC]
     public void SetMaxHealth(int health)
     {
         slider.maxValue = health;
@@ -17,6 +19,7 @@ public class HealthBar1 : MonoBehaviour
         fill.color = gradient.Evaluate(1f);
     }
 
+    [PunRPC]
     public void SetHealth(int health)
     {
         slider.value = health;
