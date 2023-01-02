@@ -59,7 +59,8 @@ public class Player1Controller : MonoBehaviour
         //player1LivesTxt.text = MenuManager.p1Name + " lives left: " + player1Lives;
         PlayerCurrentHealth = PlayerMaxHealth;
         healthBar.SetMaxHealth(PlayerMaxHealth);
-
+        view.RPC("SetCurrentHealth", RpcTarget.AllBuffered);
+        //view.RPC("SetMaxPlayerHealth", RpcTarget.All);
         playerNametxt.text = view.Owner.NickName;
 
         spawnPosition = new Vector3(Random.Range(minX, maxX), 0.25f, Random.Range(minZ, maxZ));
@@ -68,6 +69,7 @@ public class Player1Controller : MonoBehaviour
             respawnText = GameObject.FindWithTag("Respawn");
             respawnText.gameObject.SetActive(false);
         }
+        //PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     void FixedUpdate()
@@ -115,7 +117,8 @@ public class Player1Controller : MonoBehaviour
 
     void Update()
     {
-        healthBar.SetHealth(PlayerCurrentHealth);
+        view.RPC("SetCurrentHealth", RpcTarget.AllBuffered);
+        //healthBar.SetHealth(PlayerCurrentHealth);
         if (view.IsMine)
         {
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
@@ -300,5 +303,16 @@ public class Player1Controller : MonoBehaviour
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
             GetComponent<Rigidbody>().position += GetComponent<Rigidbody>().velocity * lag;
         }
+    }
+
+    [PunRPC]
+    void SetCurrentHealth()
+    {
+        healthBar.SetHealth(PlayerCurrentHealth);
+    }
+    [PunRPC]
+    void SetMaxPlayerHealth()
+    {
+        healthBar.SetMaxHealth(PlayerMaxHealth);
     }
 }

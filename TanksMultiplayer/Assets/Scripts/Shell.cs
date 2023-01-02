@@ -15,7 +15,8 @@ public class Shell : MonoBehaviour
     void Start()
     {
         shellDamage = 25;
-        DestroyShell(7f);
+        //DestroyShell(7f);
+        GetComponent<PhotonView>().RPC("DestroyShell", RpcTarget.All, 7f);
     }
 
     void Update()
@@ -31,15 +32,19 @@ public class Shell : MonoBehaviour
             //PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity);
             SpawnExplosion();
             DestroyShell(0f);
+            //GetComponent<PhotonView>().RPC("SpawnExplosion", RpcTarget.All);
+            //GetComponent<PhotonView>().RPC("DestroyShell", RpcTarget.All, 0.2f);
         }
 
         if (col.gameObject.tag == "Player")
         {
             //PhotonNetwork.Instantiate(explosion.name, this.transform.position, Quaternion.identity);
-            SpawnExplosion();
             col.gameObject.GetComponent<Player1Controller>().PlayerCurrentHealth -= shellDamage;
             col.gameObject.GetComponent<Player1Controller>().hit = true;
+            SpawnExplosion();
             DestroyShell(0f);
+            //GetComponent<PhotonView>().RPC("SpawnExplosion", RpcTarget.All);
+            //GetComponent<PhotonView>().RPC("DestroyShell", RpcTarget.All, 0.2f);
         }
     }
     /*

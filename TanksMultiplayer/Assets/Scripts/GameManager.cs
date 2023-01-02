@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
     public float minZ;
     public float maxZ;
 
+    void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
     void Start()
     {
         //respawnText.gameObject.SetActive(false);
