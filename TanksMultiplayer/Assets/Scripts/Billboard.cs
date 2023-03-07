@@ -9,6 +9,7 @@ public class Billboard : MonoBehaviour
     public GameObject player;
     private Vector3 offset = new Vector3(0, 7.5f, 0);
 
+    
     public PhotonView view;
 
     void Start()
